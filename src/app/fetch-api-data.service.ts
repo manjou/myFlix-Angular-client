@@ -116,7 +116,7 @@ getGenre(genreName: string): Observable<any> {
       );
     }
 
-// get a user by username  -- not sure if this is needed !!!
+// get a user by userId  -- not sure if this is needed !!!
 getUser(userId: number): Observable<any> {
   const token = localStorage.getItem('token');
   return this.http.get(apiUrl + 'users/' + userId, {
@@ -129,9 +129,9 @@ getUser(userId: number): Observable<any> {
   }
 
 // Get favourite movies by userid
-getFavoriteMovies(username: string): Observable<any> {
+getFavoriteMovies(userId: number): Observable<any> {
   const token = localStorage.getItem('token');
-  return this.http.get(apiUrl + 'users/' + username + 'FavoriteMovies', {
+  return this.http.get(apiUrl + 'users/' + userId + 'FavoriteMovies', {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
@@ -141,9 +141,9 @@ getFavoriteMovies(username: string): Observable<any> {
 }
 
 // Add a movie to a user's list of favorites
-addFavoriteMovie(username: string, movieId: number): Observable<any> {
+addFavoriteMovie(userId: number, movieId: number): Observable<any> {
   const token = localStorage.getItem('token');
-  return this.http.post(apiUrl + 'users/' + username + 'FavoriteMovies/' + movieId, movieId, {
+  return this.http.post(apiUrl + 'users/' + userId + 'FavoriteMovies/' + movieId, movieId, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
@@ -153,9 +153,9 @@ addFavoriteMovie(username: string, movieId: number): Observable<any> {
 }
 
 // Delete a movie from a user's list of favorites
-deleteFavoriteMovie(username: string, movieId: number): Observable<any> {
+deleteFavoriteMovie(userId: string, movieId: number): Observable<any> {
   const token = localStorage.getItem('token');
-  return this.http.delete(apiUrl + 'users/' + username + 'FavoriteMovies/' + movieId, {
+  return this.http.delete(apiUrl + 'users/' + userId + 'FavoriteMovies/' + movieId, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
@@ -177,13 +177,14 @@ editUserProfile(userDetails: any): Observable<any> {
 }
 
 // Delete a user -- not shure if i should use user id or username
-deleteUser(username: string): Observable<any> {
+deleteUser(userId: number): Observable<any> {
   const token = localStorage.getItem('token');
-  return this.http.delete(apiUrl + 'users/' + username, {
+  return this.http.delete(apiUrl + 'users/' + userId, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
       map(this.extractResponseData),
       catchError(this.handleError)
     );
-  }
+  }           
+}    
