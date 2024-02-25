@@ -29,7 +29,7 @@ export class FetchApiDataService {
       catchError(this.handleError)
     );
   }
-
+// Error handling
   private handleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
@@ -48,18 +48,6 @@ export class FetchApiDataService {
     (
       catchError(this.handleError)
     );
-  }
-
-  private handleError(error: HttpErrorResponse): any {
-    if (error.error instanceof ErrorEvent) {
-      console.error('Some error occurred:', error.error.message);
-  } else {
-    console.error(
-      `Error Status code ${error.status}, ` +
-      `Error body is: ${error.error}`);
-  }
-  return throwError(
-    'Something bad happened; please try again later.');
   }
 
 // get all movies
@@ -117,7 +105,7 @@ getGenre(genreName: string): Observable<any> {
     }
 
 // get a user by userId  -- not sure if this is needed !!!
-getUser(userId: number): Observable<any> {
+getUser(userId: string): Observable<any> {
   const token = localStorage.getItem('token');
   return this.http.get(apiUrl + 'users/' + userId, {
     headers: new HttpHeaders({
@@ -129,7 +117,7 @@ getUser(userId: number): Observable<any> {
   }
 
 // Get favourite movies by userid
-getFavoriteMovies(userId: number): Observable<any> {
+getFavoriteMovies(userId: string): Observable<any> {
   const token = localStorage.getItem('token');
   return this.http.get(apiUrl + 'users/' + userId + 'FavoriteMovies', {
     headers: new HttpHeaders({
@@ -143,7 +131,7 @@ getFavoriteMovies(userId: number): Observable<any> {
 // Add a movie to a user's list of favorites
 addFavoriteMovie(userId: number, movieId: number): Observable<any> {
   const token = localStorage.getItem('token');
-  return this.http.post(apiUrl + 'users/' + userId + 'FavoriteMovies/' + movieId, movieId, {
+  return this.http.post(apiUrl + 'users/' + userId + 'movies/' + movieId, movieId, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
@@ -153,9 +141,9 @@ addFavoriteMovie(userId: number, movieId: number): Observable<any> {
 }
 
 // Delete a movie from a user's list of favorites
-deleteFavoriteMovie(userId: string, movieId: number): Observable<any> {
+deleteFavoriteMovie(userId: string, movieId: string): Observable<any> {
   const token = localStorage.getItem('token');
-  return this.http.delete(apiUrl + 'users/' + userId + 'FavoriteMovies/' + movieId, {
+  return this.http.delete(apiUrl + 'users/' + userId + 'movies/' + movieId, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
@@ -176,8 +164,8 @@ editUserProfile(userDetails: any): Observable<any> {
     );
 }
 
-// Delete a user -- not shure if i should use user id or username
-deleteUser(userId: number): Observable<any> {
+// Delete a user 
+deleteUser(userId: string): Observable<any> {
   const token = localStorage.getItem('token');
   return this.http.delete(apiUrl + 'users/' + userId, {
     headers: new HttpHeaders({
