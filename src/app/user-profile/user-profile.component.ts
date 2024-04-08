@@ -35,7 +35,6 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProfile();
-    this.getFavMovies();
   }
 
   /**
@@ -58,26 +57,23 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-
-/**
- * this method updates the user's profile information
- * @returns message "User update successful" or "User update failed"
- */
+  /**
+   * this method updates the user's profile information
+   * @returns message "User update successful" or "User update failed"
+   */
 
   updateUser(): void {
     this.fetchApiData.editUserProfile(this.userData).subscribe((resp) => {
       console.log('User update success:', resp);
-    localStorage.setItem('user', JSON.stringify(resp));
-    this.snackBar.open('User updated successfully!', 'OK', {
-      duration: 2000,
+      localStorage.setItem('user', JSON.stringify(resp));
+      this.snackBar.open('User updated successfully!', 'OK', {
+        duration: 2000,
+      });
+    }, (error) => {
+      console.log('Error updating user:', error);
+      this.snackBar.open('Failed to update user', 'OK', {
+        duration: 2000,
+      });
     });
-  }, (error) => {
-    console.log('Error updating user:', error);
-    this.snackBar.open('Failed to update user', 'OK', {
-      duration: 2000,
-    });
-  });
   }
-
-
 }

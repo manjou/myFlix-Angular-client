@@ -9,7 +9,7 @@
             <mat-card-title>{{ movie.Title }}</mat-card-title>
             <mat-card-subtitle>{{ movie.Director.Name }}</mat-card-subtitle>
           </mat-card-header>
-          <mat-card-actions>
+          <mat-card-actions class="actions">
             <button
               mat-button
               color="primary"
@@ -47,14 +47,14 @@
               (click)="toggleFav(movie)"
             >
               <mat-icon
-                *fgIf="isFav(movie)"
+                *ngIf="isFav(movie._id)"
                 style="transform: scale(1.5)"
                 color="primary"
               >
                 favorite
               </mat-icon>
               <mat-icon
-                *ngIf="!isFav(movie)"
+                *ngIf="!isFav(movie._id)"
                 style="transform: scale(1.5)"
                 color="primary"
               >
@@ -62,9 +62,6 @@
               </mat-icon>
             </button>
           </mat-card-actions>
-          <mat-card-footer>
-            <mat-icon>grade</mat-icon>{{ movie.Rating }}
-          </mat-card-footer>
         </div>
       </mat-card>
     </div>
