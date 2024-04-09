@@ -47,14 +47,14 @@
               (click)="toggleFav(movie)"
             >
               <mat-icon
-                *ngIf="isFav(movie._id)"
+                *ngIf="isFav(movie)"
                 style="transform: scale(1.5)"
                 color="primary"
               >
                 favorite
               </mat-icon>
               <mat-icon
-                *ngIf="!isFav(movie._id)"
+                *ngIf="!isFav(movie)"
                 style="transform: scale(1.5)"
                 color="primary"
               >

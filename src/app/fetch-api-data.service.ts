@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 //Declaring the api url that will provide data for the client app
@@ -33,6 +33,7 @@ export class FetchApiDataService {
 
   // This service will handle the user login form
   public userLogin(userDetails: any): Observable<any> {
+    console.log(userDetails);
     return this.http.post(apiUrl + 'login', userDetails).pipe
     (
       catchError(this.handleError)
@@ -93,37 +94,45 @@ public getGenre(genreName: string): Observable<any> {
      * Making the api call for the Get User endpoint.
      * @returns {Observable<any>} - Observable for the API response.
      */
-  public getLocalUser(): any {
-    try {
-      const user = JSON.parse(localStorage.getItem('user') || 'null');
-      console.log('User from local storage:', user)
-      return user;
-    } catch (error) {
-      console.log('Error getting user from local storage:', error);
-      return null;
-    }    
-  }
-
-// get a user by userId 
-public getUser(userId?: string): Observable<any> {
-  if (!userId) {
-    const user = this.getLocalUser();
-    if (user) {
-      userId = user.id;
-    } else {
-      throw new Error('User Id not provided and no user found in local storage.')
+    public getLocalUser(): any {
+      const user = localStorage.getItem('user');
+      if (user && this.isJsonString(user)) {
+        return JSON.parse(user);
+      } else {
+        console.log('Invalid user data in local storage:', user);
+        return null;
+      }
     }
-  }
-
-  const token = localStorage.getItem('token');
-  return this.http.get(apiUrl + 'users/' + userId, {
-    headers: new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-    })}).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
-  }
+    
+    private isJsonString(str: string): boolean {
+      try {
+        JSON.parse(str);
+      } catch (e) {
+        return false;
+      }
+      return true;
+    }
+    
+    public getUser(userId?: string): Observable<any> {
+      if (!userId) {
+        const user = this.getLocalUser();
+        if (user && user._id) {
+          userId = user._id;
+        } else {
+          console.log('User Id not provided and no user found in local storage.')
+          return of(null)
+        }
+      }
+    
+      const token = localStorage.getItem('token');
+      return this.http.get(apiUrl + 'users/' + userId, {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token,
+        })}).pipe(
+          map(this.extractResponseData),
+          catchError(this.handleError)
+        );
+      }
 
 // Get favourite movies by userid
 public getFavoriteMovies(userId: string): Observable<any> {
