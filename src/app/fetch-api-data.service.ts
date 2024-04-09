@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError, of, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 //Declaring the api url that will provide data for the client app
@@ -125,14 +125,24 @@ public getGenre(genreName: string): Observable<any> {
       }
     
       const token = localStorage.getItem('token');
-      return this.http.get(apiUrl + 'users/' + userId, {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        })}).pipe(
-          map(this.extractResponseData),
-          catchError(this.handleError)
-        );
-      }
+  return this.http.get(apiUrl + 'users/' + userId, {
+    headers: new HttpHeaders({
+      Authorization: 'Bearer ' + token,
+    })}).pipe(
+      tap({
+        next: data => {
+          if (this.isJsonString(JSON.stringify(data))) {
+            console.log('Data:', data);
+          } else {
+            console.log('Data is not valid JSON:', data);
+          }
+        },
+        error: error => console.log('Error:', error)
+      }),
+      map(this.extractResponseData),
+      catchError(this.handleError)
+    );
+}
 
 // Get favourite movies by userid
 public getFavoriteMovies(userId: string): Observable<any> {
@@ -202,6 +212,7 @@ public deleteUser(userId: string): Observable<any> {
     * @private
     */
   private extractResponseData(res: Response | Object): any {
+    console.log('Response body:', res)
     const body = res;      
     return body || { };
   }
