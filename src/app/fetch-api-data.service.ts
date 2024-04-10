@@ -132,7 +132,6 @@ public getGenre(genreName: string): Observable<any> {
       tap({
         next: data => {
           if (this.isJsonString(JSON.stringify(data))) {
-            console.log('Data:', data);
           } else {
             console.log('Data is not valid JSON:', data);
           }
@@ -182,8 +181,9 @@ public deleteFavoriteMovie(userId: string, movieId: string): Observable<any> {
 
 // Edit a user's profile
 public editUserProfile(userDetails: any): Observable<any> {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const token = localStorage.getItem('token');
-  return this.http.put(apiUrl + 'users/' + userDetails.Username, userDetails, {
+  return this.http.put(apiUrl + 'users/' + user.UserId, userDetails, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
@@ -212,7 +212,6 @@ public deleteUser(userId: string): Observable<any> {
     * @private
     */
   private extractResponseData(res: Response | Object): any {
-    console.log('Response body of extracResponseData:', res)
     const body = res;      
     return body || { };
   }
