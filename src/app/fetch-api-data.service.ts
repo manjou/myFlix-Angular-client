@@ -212,7 +212,7 @@ public deleteUser(userId: string): Observable<any> {
     * @private
     */
   private extractResponseData(res: Response | Object): any {
-    console.log('Response body:', res)
+    console.log('Response body of extracResponseData:', res)
     const body = res;      
     return body || { };
   }

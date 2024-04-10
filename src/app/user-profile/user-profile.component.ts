@@ -46,17 +46,16 @@ export class UserProfileComponent implements OnInit {
 
   getProfile(): void {
     this.fetchApiData.getUser().subscribe((response) => {
+      console.log('response:', response)
       this.user = response;
-      return response;
-    });
-    console.log('User:', this.user)
       this.userData.Username = this.user.Username;
       this.userData.Email = this.user.Email;
       this.userData.Birthday = this.user.Birthday;
       this.fetchApiData.getAllMovies().subscribe((response) => {
         this.FavoriteMovies = response.filter((movie: any) => this.favoriteMoviesIDs.includes(movie._id));
       });
-}
+    });
+  }
   // getProfile(): void {
   //   const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string) : null;
   //   console.log('user in getProfile:', user)
