@@ -125,7 +125,7 @@ public getGenre(genreName: string): Observable<any> {
       }
     
       const token = localStorage.getItem('token');
-  return this.http.get(apiUrl + 'users/' + userId, {
+    return this.http.get(apiUrl + 'users/' + userId, {
     headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
