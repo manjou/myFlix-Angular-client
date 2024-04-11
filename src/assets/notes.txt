@@ -1,0 +1,12 @@
+ng deploy --base-href=https://manjou.github.io/myFlix-Angular-client/ --no-nojekyll --dir=dist/my-flix-angular-client/
+
+Deploying Your Application
+Now, you’ll deploy your application to GitHub Pages, which will allow you to turn your repository into a website. Here's what you need to do:
+
+1. Create a new repository on GitHub.
+2. Link the new remote repository to the local project folder. To do so, simply run this command from inside your project folder (replace <GitHub-username> and <repository-name> with your own GitHub username and repository name): git remote add origin https://github.com/<GitHub-username>/<repository-name>.git
+3. Add angular-cli-ghpages by running ng add angular-cli-ghpages.
+4. Build your application (i.e., generate static HTML, CSS, and JavaScript files out of your application so that browsers can interpret them without the need to use any extra tools/plugins). To do so, run the following command, replacing <repository-name> with your own repository name: ng deploy --base-href=/<repository-name>/.
+5. Wait for angular-cli-ghpages to generate the new production code. It will then try to push the code to the gh-pages branch, so it will prompt you to enter your GitHub username and password if you haven't automated the GitHub authentication process before.
+6. The application should be published shortly. You may need to wait up to 20 minutes (not always the case—sometimes it gets published instantly). The URL of your application will be https://<GitHub-username>.github.io/<repository-name>/.
+Whenever you make any changes to your application's code, all you need to do is redo Step 4 to generate a new build and push the new code. Both parts will be done automatically by angular-cli-ghpages once you run the command.
