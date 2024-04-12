@@ -1,8 +1,10 @@
+// Import necessary modules
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
+// Import Angular Material modules
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -15,6 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { DialogModule } from '@angular/cdk/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 
+// Import application specific modules
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +32,7 @@ import { DirectorInfoComponent } from './director-info/director-info.component';
 import { GenreInfoComponent } from './genre-info/genre-info.component';
 import { MovieSynopsisComponent } from './movie-synopsis/movie-synopsis.component';
 
+// Define the routes for the application
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
   { path: 'movies', component: MovieCardComponent },
@@ -36,6 +40,11 @@ const appRoutes: Routes = [
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
 ];
 
+/**
+ * AppModule class
+ * 
+ * This class is the main module of the application. It declares and imports other components and modules.
+ */
 @NgModule({
   declarations: [
     AppComponent,

@@ -18,15 +18,30 @@ import { GenreInfoComponent } from '../genre-info/genre-info.component';
   styleUrls: ['./movie-card.component.scss']
 })
 
-// MovieCardComponent class
+/**
+ * MovieCardComponent class
+ * 
+ * This class is responsible for displaying movie cards and handling user interactions related to movies.
+ */
 export class MovieCardComponent implements OnInit {
   // Input decorator to bind movies property
-  @Input() movies: any = [];
+  @Input() 
+  /**
+   * An array of movies to be displayed.
+   */
+  movies: any = [];
   user: any = {};
   userData = { UserId: "", FavoriteMovies: [] }
   FavoriteMovies: any[] = [];
 
-  // Constructor with necessary services injected
+  /**
+   * Constructor for the MovieCardComponent class.
+   * 
+   * @param fetchApiData - The service to fetch data from the API.
+   * @param dialog - The service to handle dialogs.
+   * @param snackBar - The service to display snack bars.
+   * @param router - The service to handle routing.
+   */
   constructor(
     public fetchApiData: FetchApiDataService,
     public dialog: MatDialog,

@@ -14,10 +14,11 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "ES5",
+    "module": "CommonJS",
     "useDefineForClassFields": false,
     "lib": [
       "ES2022",
@@ -33,16 +34,7 @@
   "typedocOptions": {
     "out": "./docs",
     "exclude": ["**/*.spec.ts"],
-    "theme": "minimal",
-    "ignoreCompilerErrors": "true",
-    "experimentalDecorators": "true",
-    "emitDecoratorMetadata": "true",
-    "target": "ES5",
-    "moduleResolution": "node",
-    "preserveConstEnums": "true",
-    "stripInternal": "true",
-    "suppressExcessPropertyErrors": "true",
-    "suppressImplicitAnyIndexErrors": "true",
-    "module": "commonjs"
+    "entryPoints": ["./src"],
+    "entryPointStrategy": "expand"
   }
 }
