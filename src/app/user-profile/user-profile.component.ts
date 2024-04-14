@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 // Import MatSnackBar to display notifications
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
+import { map, mergeMap, concatMap } from 'rxjs/operators';
 
 // Component Imports
 import { DirectorInfoComponent } from '../director-info/director-info.component';
@@ -65,21 +66,33 @@ export class UserProfileComponent implements OnInit {
    * getProfile method fetches the user's profile information and favorite movies.
    */
   getProfile(): void {
-    this.fetchApiData.getUser().subscribe((response) => {
-      console.log('response:', response)
-      this.user = response;
-      this.userData.Username = this.user.Username;
-      this.userData.Email = this.user.Email;
-      let birthday = new Date(this.user.BirthDay)
-      this.userData.Birthday = birthday.toISOString().split('T')[0];
-      this.userData.UserId = this.user._id;
-      this.formUserData = { ...this.userData }
-      this.favoriteMoviesIDs = this.user.FavoriteMovies;                  
-      });
-    this.fetchApiData.getAllMovies().subscribe((response) => {
-      this.FavoriteMovies = response.filter((movie: any) => this.favoriteMoviesIDs.includes(movie._id));
-  });
-}
+    this.fetchApiData.getUser()
+      .pipe(
+        map((response: any) => {
+          console.log('response:', response)
+          this.user = response;
+          this.userData.Username = this.user.Username;
+          this.userData.Email = this.user.Email;
+          if (this.user.BirthDay) {
+            let birthday = new Date(this.user.BirthDay);
+            if (!isNaN(birthday.getTime())) {
+              this.userData.Birthday = birthday.toISOString().split('T')[0];
+            }
+          }
+          // let birthday = new Date(this.user.BirthDay)
+          // this.userData.Birthday = birthday.toISOString().split('T')[0];
+          this.userData.UserId = this.user._id;
+          this.formUserData = { ...this.userData }
+          this.favoriteMoviesIDs = this.user.FavoriteMovies;
+          return this.favoriteMoviesIDs;
+        }),
+        concatMap((favoriteMoviesIDs) => this.fetchApiData.getAllMovies().pipe(
+          map((movies) => {
+            this.FavoriteMovies = movies.filter((movie: any) => favoriteMoviesIDs.includes(movie._id));
+          })
+        ))
+      ).subscribe();
+  }
 
 
   /**
